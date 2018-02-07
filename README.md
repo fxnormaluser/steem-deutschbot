@@ -1,6 +1,10 @@
-# deutschbot
+# steem-deutschbot
 
-Deutschbot is a discord/steem bot curators content in the steem blockchain.
+steem-deutschbot is a discord/steem bot to curate content under pre-defined tags in the steem blockchain.
+The discord interface is to edit a list of curators, blacklist users and adjust a threshold.
+The bot will calculate a score for each post, based on the votes of the curators and their vote's weights.
+Once the score reaches the threshold, the bot will vote for the post, too.
+( vote_weight = 100%  ^= score += 10000 )
 
 #### Installation
 
