@@ -58,7 +58,7 @@ class Curator:
         # the post is tagged with the tags we defined?
         if len(set(self.expected_tags).intersection(p.get("tags"))) == 0:
             return
-
+       
         # is the author in the blacklist?
         if is_blacklisted(op_value.get("author")):
             return
@@ -80,6 +80,12 @@ class Curator:
         if already_voted:
             return
 
+        self.post_to_private_webhooks(
+            p,
+            curators_on_the_post,
+            score,
+        )
+
         # if the score is lower then the threshold, skip.
         if score < int(get_option(THRESHOLD_OPTION_ID)["value"]):
             return
@@ -87,9 +93,8 @@ class Curator:
         bot_account = Account(self.bot_account, steemd_instance=self.s)
         weight = bot_account.voting_power()
         self.upvote(p, weight, self.bot_account)
-        self.post_to_webhooks(
+        self.post_to_public_webhooks(
             p,
-            curators_on_the_post,
             score,
             weight
         )
@@ -110,7 +115,7 @@ class Curator:
             else:
                 logger.info("Tried 3 times but failed. %s ", post.identifier)
 
-    def post_to_webhooks(self, p, curators, score, weight):
+    def post_to_public_webhooks(self, p, score, weight):
 
         hook = Webhook(None)
         hook.set_author(
@@ -130,19 +135,37 @@ class Curator:
             value=score,
         )
 
+        for hook_url in HOOKS:
+            hook.url = hook_url
+            hook.post()
+
+    def post_to_private_webhook(self, p, curators, score):
+
+        hook = Webhook(None)
+        hook.set_author(
+            name=self.bot_account,
+            url="http://steemit.com/@%s" % self.bot_account,
+            icon="https://img.busy.org/@%s?height=100&width=100" %
+                 self.bot_account,
+        )
+
+        hook.add_field(
+            name="Post",
+            value=url(p),
+        )
+
+        hook.add_field(
+            name="Score",
+            value=score,
+        )
+
         hook.add_field(
             name="Curators",
             value=",".join(c["curator"] for c in curators)
         )
 
-        hook.add_field(
-            name="Curator weights",
-            value=",".join(str(c["weight"]) for c in curators)
-        )
-
-        for hook_url in HOOKS:
-            hook.url = hook_url
-            hook.post()
+        hook.url = HOOKS[0]
+        hook.post()
 
     def parse_block(self, block_id):
         logger.info("Parsing %s", block_id)
