@@ -1,10 +1,22 @@
 # steem-deutschbot
 
+This is a fork of:
+
+https://github.com/emre/deutschbot
+
 steem-deutschbot is a discord/steem bot to curate content under pre-defined tags in the steem blockchain.
 The discord interface is to edit a list of curators, blacklist users and adjust a threshold.
 The bot will calculate a score for each post, based on the votes of the curators and their vote's weights.
 Once the score reaches the threshold, the bot will vote for the post, too.
 ( vote_weight = 100%  ^= score += 10000 )
+
+Custom additions:
+
+The first webhook in the list of webhooks will be used as 'private', all following hooks are 'public'.
+
+All webhooks will broadcast on a bot vote; post, weight, score
+
+The private webhook broadcasts on every vote also; post, curators, score
 
 #### Installation
 
