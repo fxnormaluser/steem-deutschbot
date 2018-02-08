@@ -80,7 +80,7 @@ class Curator:
         if already_voted:
             return
 
-        self.post_to_private_webhooks(
+        self.post_to_private_webhook(
             p,
             curators_on_the_post,
             score,
