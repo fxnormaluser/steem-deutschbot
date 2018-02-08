@@ -1,6 +1,6 @@
 # steem-deutschbot
 
-This is a fork of:
+#### This is a fork of:
 
 https://github.com/emre/deutschbot
 
@@ -10,7 +10,7 @@ The bot will calculate a score for each post, based on the votes of the curators
 Once the score reaches the threshold, the bot will vote for the post, too.
 ( vote_weight = 100%  ^= score += 10000 )
 
-Custom additions:
+#### Custom additions:
 
 The first webhook in the list of webhooks will be used as 'private', all following hooks are 'public'.
 
