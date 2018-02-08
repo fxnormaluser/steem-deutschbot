@@ -153,4 +153,4 @@ def get_curators():
 
 
 def url(p):
-    return "https://steemit.com/%s/%s" % (p.get("author"), p.get("permlink"))
+    return "https://steemit.com/@%s/%s" % (p.get("author"), p.get("permlink"))

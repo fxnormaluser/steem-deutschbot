@@ -115,7 +115,7 @@ class Curator:
         hook = Webhook(None)
         hook.set_author(
             name=self.bot_account,
-            url="http://steemit.com/tag/@%s" % self.bot_account,
+            url="http://steemit.com/@%s" % self.bot_account,
             icon="https://img.busy.org/@%s?height=100&width=100" %
                  self.bot_account,
         )
